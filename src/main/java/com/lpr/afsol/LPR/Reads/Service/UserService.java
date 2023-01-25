@@ -5,6 +5,7 @@ import com.lpr.afsol.LPR.Reads.Entity.User;
 import com.lpr.afsol.LPR.Reads.Factory.UserFactory;
 import com.lpr.afsol.LPR.Reads.Repository.RoleDao;
 import com.lpr.afsol.LPR.Reads.Repository.UserDao;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,16 @@ public class UserService {
     }
 
     public User update(User user){
-        return this.REPOSITORY.save(user);
+        User update = new User();
+        try {
+            update = this.getById(user.getUserName());
+            update.setUserFirstName(user.getUserFirstName());
+            update.setUserLastName(user.getUserLastName());
+            update.setUserPassword(user.getUserPassword());
+        } catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("Invalid username", e);
+        }
+        return this.REPOSITORY.save(update);
     }
 
     public User getById(String username){
@@ -46,7 +56,13 @@ public class UserService {
     }
 
     public void deleteById(String username){
-        this.REPOSITORY.deleteById(username);
+        try{
+            User val = this.REPOSITORY.findById(username).get();
+            val.getRole().remove(username);
+            this.REPOSITORY.deleteById(username);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Non-existent username", e);
+        }
     }
 
     public List<User> findAll(){
