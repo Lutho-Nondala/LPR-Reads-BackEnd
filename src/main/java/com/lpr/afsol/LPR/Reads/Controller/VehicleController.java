@@ -27,8 +27,8 @@ public class VehicleController {
     }
 
     @GetMapping("findByNumberPlate/{numberPlate}")
-    public  ResponseEntity<List<Vehicle>> findVehiclesByNumberPlate(@PathVariable String numberPlate){
-        return ResponseEntity.ok(this.SERVICE.findVehiclesByNumberPlate(numberPlate));
+    public  ResponseEntity<Vehicle> findVehiclesByNumberPlate(@PathVariable String numberPlate){
+        return ResponseEntity.ok(this.SERVICE.findVehicleByNumberPlate(numberPlate));
     }
 
     @PutMapping("update")

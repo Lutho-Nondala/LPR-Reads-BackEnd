@@ -11,7 +11,7 @@ import java.io.Console;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/lpr/jwt")
+@RequestMapping("/lprreads/jwt")
 @Slf4j
 public class JwtController {
     @Autowired

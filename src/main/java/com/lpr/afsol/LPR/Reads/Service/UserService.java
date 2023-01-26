@@ -22,6 +22,9 @@ public class UserService {
     private UserDao REPOSITORY;
 
     @Autowired
+    private EntityManager entityManager;
+
+    @Autowired
     private RoleDao roleDao;
 
     @Autowired
@@ -55,14 +58,8 @@ public class UserService {
         return this.REPOSITORY.findById(username).get();
     }
 
-    public void deleteById(String username){
-        try{
-            User val = this.REPOSITORY.findById(username).get();
-            val.getRole().remove(username);
-            this.REPOSITORY.deleteById(username);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Non-existent username", e);
-        }
+    public void deleteById(String username) {
+        this.REPOSITORY.deleteById(username);
     }
 
     public List<User> findAll(){

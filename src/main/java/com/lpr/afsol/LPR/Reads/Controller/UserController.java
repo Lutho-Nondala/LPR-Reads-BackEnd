@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/lpr/user")
+@RequestMapping("/lprreads/user")
 public class UserController {
     @Autowired
     private UserService SERVICE;

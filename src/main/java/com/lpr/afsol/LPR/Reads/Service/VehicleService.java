@@ -22,12 +22,23 @@ public class VehicleService {
         return REPOSITORY.findById(id).get();
     }
 
-    public List<Vehicle> findVehiclesByNumberPlate(String numberPlate){
-        return REPOSITORY.findVehiclesByNumberPlate(numberPlate);
+    public Vehicle findVehicleByNumberPlate(String numberPlate){
+        return REPOSITORY.findVehicleByNumberPlate(numberPlate);
     }
 
     public Vehicle update(Vehicle vehicle){
-        return REPOSITORY.save(vehicle);
+        Vehicle update = new Vehicle();
+        try{
+            update = this.findVehicleByNumberPlate(vehicle.getNumberPlate());
+            update.setMake(vehicle.getMake());
+            update.setModel(vehicle.getModel());
+            update.setColor(vehicle.getColor());
+            update.setFeatures(vehicle.getFeatures());
+            update.setNotes(vehicle.getNotes());
+            return REPOSITORY.save(update);
+        } catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("Invalid number plate registration", e);
+        }
     }
 
     public void delete(long id){
