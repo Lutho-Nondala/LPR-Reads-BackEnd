@@ -1,5 +1,8 @@
 package com.lpr.afsol.LPR.Reads.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Time;
@@ -11,13 +14,15 @@ public class LPR {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private long id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @JsonBackReference
     private Vehicle vehicle;
-    private Time time;
+    private String time;
     private String camera;
     private String location;
-    @OneToMany(mappedBy = "lpr", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "lpr", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Images> lprImages;
 
     public LPR(){
@@ -49,11 +54,11 @@ public class LPR {
         this.id = id;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -83,7 +88,7 @@ public class LPR {
 
     public static class Builder{
         private long id;
-        private Time time;
+        private String time;
 
         private Vehicle vehicle;
         private String camera, location;
@@ -99,7 +104,7 @@ public class LPR {
             return this;
         }
 
-        public Builder time(Time time){
+        public Builder time(String time){
             this.time = time;
             return this;
         }

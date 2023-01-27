@@ -24,11 +24,12 @@ public class LprController {
     private LprService SERVICE;
 
     @PostMapping(value = {"create"}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<LPR> create(@RequestPart("lpr") LPR lpr, @RequestPart("imageFile") MultipartFile[] file){
+    public ResponseEntity<LPR> create(@RequestPart("lpr") LPR lpr, @RequestPart("imageFile") MultipartFile[] file, @RequestPart("vehicleId") String vehicleId){
+        log.info(vehicleId);
         try{
             Set<Images> images = uploadImage(file, lpr);
             lpr.setLprImages(images);
-            return ResponseEntity.ok(this.SERVICE.create(lpr));
+            return ResponseEntity.ok(this.SERVICE.create(lpr, Long.parseLong(vehicleId)));
         } catch (Exception e){
             System.out.println(e.getMessage());
             return null;

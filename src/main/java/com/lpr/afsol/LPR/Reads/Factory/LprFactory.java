@@ -8,7 +8,7 @@ import java.sql.Time;
 import java.util.Set;
 
 public class LprFactory {
-    public static LPR buildLpr(Vehicle vehicle, Time time, String camera, String location, Set<Images> lprImages){
+    public static LPR buildLpr(Vehicle vehicle, String time, String camera, String location, Set<Images> lprImages){
         if (vehicle == null){
             throw new IllegalArgumentException("Number plate is needed.");
         }

@@ -1,5 +1,6 @@
 package com.lpr.afsol.LPR.Reads.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,8 +13,9 @@ public class Images {
     @Column(length = 50000000)
     private byte[] imgByte;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "lpr_id", referencedColumnName = "id")
+    @JsonBackReference
     private LPR lpr;
 
     public Images(){

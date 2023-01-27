@@ -6,6 +6,7 @@ import com.lpr.afsol.LPR.Reads.Entity.Vehicle;
 import com.lpr.afsol.LPR.Reads.Repository.ImageRepository;
 import com.lpr.afsol.LPR.Reads.Repository.LprRepository;
 import com.lpr.afsol.LPR.Reads.Repository.VehicleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class LprService {
     @Autowired
     private LprRepository REPOSITORY;
@@ -23,10 +25,12 @@ public class LprService {
     @Autowired
     private ImageRepository imgRepo;
 
-    public LPR create(LPR lpr){
-        //Set<Images> images = this.imgRepo.save(lpr.getLprImages());
-//        Vehicle vehicle = this.vehicleRepository.findById()
-        return this.REPOSITORY.save(lpr);
+    public LPR create(LPR lpr, long vehicleId){
+        Vehicle vehicle = this.vehicleRepository.findById(vehicleId).get();
+        vehicle.getLpr().add(lpr);
+        log.info(vehicle.toString());
+        Vehicle update = this.vehicleRepository.save(vehicle);
+        return lpr;
     }
 
     public LPR read(long id){

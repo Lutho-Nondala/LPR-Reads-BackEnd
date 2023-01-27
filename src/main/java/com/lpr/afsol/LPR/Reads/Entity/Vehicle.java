@@ -1,5 +1,7 @@
 package com.lpr.afsol.LPR.Reads.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -16,7 +18,23 @@ public class Vehicle {
     private String color;
     private String features;
     private String notes;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicle", orphanRemoval = true)
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", numberPlate='" + numberPlate + '\'' +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", color='" + color + '\'' +
+                ", features='" + features + '\'' +
+                ", notes='" + notes + '\'' +
+                ", lpr=" + lpr +
+                '}';
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicle", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<LPR> lpr;
 
     public Vehicle(){
